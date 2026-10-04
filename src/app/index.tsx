@@ -1,43 +1,45 @@
-import { Text, View } from "react-native";
+import { Redirect } from "expo-router";
+import { useEffect } from "react";
+import { ActivityIndicator, View } from "react-native";
+
+import { useCustomHook } from "../utils/hook";
 
 export default function HomeScreen() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "white",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text
-        style={{
-          fontSize: 32,
-          fontWeight: "bold",
-          color: "black",
-          marginBottom: 20,
-        }}
-      >
-        Lewis TMS
-      </Text>
+  const {
+    loginId,
+    isSessionChecked,
+    getCurrentUser,
+  } = useCustomHook();
 
-      <Text
-        style={{
-          fontSize: 20,
-          color: "black",
-        }}
-      >
-        My first React Native screen
-      </Text>
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
 
-      <Text
+  // Still checking session
+  if (!isSessionChecked) {
+    return (
+      <View
         style={{
-          fontSize: 40,
-          marginTop: 20,
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        🚚
-      </Text>
-    </View>
-  );
+        <ActivityIndicator
+          size="large"
+        />
+      </View>
+    );
+  }
+
+  // Not logged in
+  console.log("loginId:", loginId);
+  console.log("isSessionChecked:", isSessionChecked);
+  console.log("!loginId:", !loginId);
+  if (!loginId) {
+    return <Redirect href="/loginPage" />;
+  }
+
+  // Logged in
+  return <View style={{ width: "100%", height: "100%" }} />;
 }
