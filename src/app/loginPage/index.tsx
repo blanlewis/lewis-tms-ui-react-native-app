@@ -1,9 +1,7 @@
-// app/loginPage/index.tsx
-
 import { Text, View } from "react-native";
 
 export default function LoginPage() {
-  console.log("Rendering Login Page");
+
   return (
     <View
       style={{
