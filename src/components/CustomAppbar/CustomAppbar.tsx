@@ -63,9 +63,7 @@ const CustomAppbar = ({
       icon={appBarLeftIconAction.icon}
       onPress={appBarLeftIconAction.onPress}
     />
-
     <Appbar.Content style={{ display: "flex", alignItems: "center" }} title={appBarContent.title} />
-
     {appBarAction.map((action, index) => (
       <Appbar.Action
         key={index}
