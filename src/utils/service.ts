@@ -1,13 +1,13 @@
 import {
-    getBookingsQuery,
-    getCurrentUserQuery,
-    getLoginUserMutationQuery,
-    getLogoutMutationQuery,
+  getBookingsQuery,
+  getCurrentUserQuery,
+  getLoginUserMutationQuery,
+  getLogoutMutationQuery,
 } from "./graphqlQueries";
 
 import {
-    BookingTypes,
-    LoginResponse,
+  BookingTypes,
+  LoginResponse,
 } from "./types";
 
 const GRAPHQL_URL = process.env.EXPO_PUBLIC_GRAPHQL_URL;
@@ -193,6 +193,6 @@ const getBookingsApi = async (
 };
 
 export {
-    getBookingsApi, getCurrentUserApi, getLoginUserMutationApi, getLogoutMutationApi
+  getBookingsApi, getCurrentUserApi, getLoginUserMutationApi, getLogoutMutationApi
 };
 
