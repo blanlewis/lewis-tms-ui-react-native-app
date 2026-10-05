@@ -1,3 +1,5 @@
+import { getCookies } from "./cookies";
+
 import {
   getBookingsQuery,
   getCurrentUserQuery,
@@ -10,11 +12,79 @@ import {
   LoginResponse,
 } from "./types";
 
-const GRAPHQL_URL = process.env.EXPO_PUBLIC_GRAPHQL_URL;
-if (!GRAPHQL_URL) {
-  throw new Error("EXPO_PUBLIC_GRAPHQL_URL is not defined");
-}
+const GRAPHQL_URL =
+  process.env.EXPO_PUBLIC_GRAPHQL_URL_FOR_WEB;
 
+if (!GRAPHQL_URL) {
+  throw new Error(
+    "EXPO_PUBLIC_GRAPHQL_URL is not defined"
+  );
+};
+
+/**
+ * Common GraphQL request function
+ */
+const graphqlRequest = async (
+  request: {
+    query: string;
+  }
+) => {
+  try {
+    const result = await fetch(
+      GRAPHQL_URL,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        // Web:
+        // Browser manages cookies automatically.
+        //
+        // Native:
+        // Allows credentials/cookies to participate
+        // in the request.
+        credentials: "include",
+
+        body: JSON.stringify(request),
+      }
+    );
+
+    if (!result.ok) {
+      throw new Error(
+        `HTTP Error: ${result.status}`
+      );
+    }
+
+    const jsonResult =
+      await result.json();
+
+    if (jsonResult.errors) {
+      console.error(
+        "GraphQL errors:",
+        jsonResult.errors
+      );
+
+      throw new Error(
+        "GraphQL request failed"
+      );
+    }
+
+    return jsonResult;
+  } catch (error) {
+    console.error(
+      "GraphQL request failed:",
+      error
+    );
+
+    throw error;
+  }
+};
+
+/**
+ * Login
+ */
 const getLoginUserMutationApi = async (
   loginId: string,
   password: string
@@ -27,24 +97,32 @@ const getLoginUserMutationApi = async (
   };
 
   try {
-    const result = await fetch(GRAPHQL_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(usersRequest),
-    });
+    const jsonResult =
+      await graphqlRequest(usersRequest);
 
-    if (!result.ok) {
-      throw new Error(
-        `HTTP Error: ${result.status}`
-      );
-    }
+    /**
+     * Check cookies after successful login.
+     *
+     * This is mainly useful for debugging
+     * the native cookie/session issue.
+     */
+    const cookies =
+      await getCookies();
 
-    const jsonResult = await result.json();
+    console.log(
+      "Cookies after login:",
+      cookies
+    );
 
-    return jsonResult.data.isLogin;
+    const loginResponse =
+      jsonResult?.data?.isLogin;
+
+    console.log(
+      "LOGIN RESPONSE:",
+      loginResponse
+    );
+
+    return loginResponse;
   } catch (error) {
     console.error(
       "Failed to login:",
@@ -55,6 +133,9 @@ const getLoginUserMutationApi = async (
   }
 };
 
+/**
+ * Get currently logged-in user
+ */
 const getCurrentUserApi = async (): Promise<
   string | null
 > => {
@@ -63,24 +144,19 @@ const getCurrentUserApi = async (): Promise<
   };
 
   try {
-    const result = await fetch(GRAPHQL_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(usersRequest),
-    });
+    const jsonResult =
+      await graphqlRequest(usersRequest);
 
-    if (!result.ok) {
-      throw new Error(
-        `HTTP Error: ${result.status}`
-      );
-    }
+    const currentUser =
+      jsonResult?.data?.currentUser ??
+      null;
 
-    const jsonResult = await result.json();
+    console.log(
+      "CURRENT USER:",
+      currentUser
+    );
 
-    return jsonResult.data.currentUser;
+    return currentUser;
   } catch (error) {
     console.error(
       "Failed to get current user:",
@@ -91,40 +167,55 @@ const getCurrentUserApi = async (): Promise<
   }
 };
 
-const getLogoutMutationApi = async (): Promise<boolean> => {
-  const usersRequest = {
-    query: getLogoutMutationQuery(),
+/**
+ * Logout
+ */
+const getLogoutMutationApi =
+  async (): Promise<boolean> => {
+    const usersRequest = {
+      query:
+        getLogoutMutationQuery(),
+    };
+
+    try {
+      const jsonResult =
+        await graphqlRequest(
+          usersRequest
+        );
+
+      const logoutResponse =
+        jsonResult?.data?.logout;
+
+      console.log(
+        "LOGOUT RESPONSE:",
+        logoutResponse
+      );
+
+      /**
+       * Check cookies after logout.
+       */
+      const cookies =
+        await getCookies();
+
+      console.log(
+        "Cookies after logout:",
+        cookies
+      );
+
+      return logoutResponse;
+    } catch (error) {
+      console.error(
+        "Failed to logout:",
+        error
+      );
+
+      throw error;
+    }
   };
 
-  try {
-    const result = await fetch(GRAPHQL_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(usersRequest),
-    });
-
-    if (!result.ok) {
-      throw new Error(
-        `HTTP Error: ${result.status}`
-      );
-    }
-
-    const jsonResult = await result.json();
-
-    return jsonResult.data.logout;
-  } catch (error) {
-    console.error(
-      "Failed to logout:",
-      error
-    );
-
-    throw error;
-  }
-};
-
+/**
+ * Get bookings
+ */
 const getBookingsApi = async (
   first: number,
   after: string | null
@@ -144,23 +235,10 @@ const getBookingsApi = async (
   };
 
   try {
-    const result = await fetch(GRAPHQL_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(bookingsRequest),
-    });
-
-    if (!result.ok) {
-      throw new Error(
-        `HTTP Error: ${result.status}`
-      );
-    }
-
     const jsonResult =
-      await result.json();
+      await graphqlRequest(
+        bookingsRequest
+      );
 
     console.log(
       "BOOKINGS RESPONSE:",
@@ -168,7 +246,13 @@ const getBookingsApi = async (
     );
 
     const bookingsData =
-      jsonResult.data.bookings;
+      jsonResult?.data?.bookings;
+
+    if (!bookingsData) {
+      throw new Error(
+        "Bookings data is missing from GraphQL response"
+      );
+    }
 
     return {
       bookingsList:
@@ -193,6 +277,9 @@ const getBookingsApi = async (
 };
 
 export {
-  getBookingsApi, getCurrentUserApi, getLoginUserMutationApi, getLogoutMutationApi
+  getBookingsApi,
+  getCurrentUserApi,
+  getLoginUserMutationApi,
+  getLogoutMutationApi
 };
 
