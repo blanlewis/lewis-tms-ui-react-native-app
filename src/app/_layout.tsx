@@ -1,6 +1,7 @@
 import { CustomHookProvider } from "@/utils/context";
 import IntlProviderWrapper from "@/utils/languageTranslation/IntlProvider";
 import { LanguageProvider } from "@/utils/languageTranslation/LanguageContext";
+import ReduxProvider from "@/utils/redux/ReduxHookProvider";
 import {
   DarkTheme,
   DefaultTheme,
@@ -25,23 +26,25 @@ export default function RootLayout() {
       <LanguageProvider>
         <IntlProviderWrapper>
           <CustomHookProvider>
-            <PaperProvider>
-              <AnimatedSplashOverlay />
-              <Stack>
-                <Stack.Screen
-                  name="index"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="loginPage"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-              </Stack>
-          </PaperProvider>
+            <ReduxProvider>
+              <PaperProvider>
+                <AnimatedSplashOverlay />
+                <Stack>
+                  <Stack.Screen
+                    name="index"
+                    options={{
+                      headerShown: false,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="loginPage"
+                    options={{
+                      headerShown: false,
+                    }}
+                  />
+                </Stack>
+            </PaperProvider>
+          </ReduxProvider>
           </CustomHookProvider>
         </IntlProviderWrapper>
       </LanguageProvider>
