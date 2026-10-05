@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import type { CustomAppbarProps } from "../CustomAppbar";
 import CustomAppbar from "../CustomAppbar";
+import CustomDrawer from "../CustomDrawer";
 
 const HomePageLayout = () => {
   const isMenuDrawerOpen = useSelector(
@@ -49,6 +50,7 @@ const HomePageLayout = () => {
         appBarContent={appTopBar.appBarContent}
         appBarAction={appTopBar.appBarAction}
       />
+      <CustomDrawer isMenuDrawerOpen={isMenuDrawerOpen} />
     </View>
   );
 };

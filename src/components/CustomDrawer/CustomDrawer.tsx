@@ -1,8 +1,11 @@
 import { Drawer } from 'react-native-paper';
 
-const CustomDrawer = () => {
+interface CustomDrawerProps {
+  isMenuDrawerOpen: boolean;
+}
+const CustomDrawer = ({ isMenuDrawerOpen }: CustomDrawerProps) => {
   return (
-    <Drawer.Section title="Some title">
+    <Drawer.Section title="Some title" style={{ display: isMenuDrawerOpen ? 'flex' : 'none' }}>
       <Drawer.Item
         label="First Item"
         active={true}
