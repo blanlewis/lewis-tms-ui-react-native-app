@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import LoginPageModal from "../../components/LoginPageModal";
 
 export default function LoginPage() {
 
@@ -10,7 +11,7 @@ export default function LoginPage() {
         justifyContent: "center",
       }}
     >
-      <Text>Login Page</Text>
+      <LoginPageModal />
     </View>
   );
 }

@@ -9,6 +9,7 @@ import {
 } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useColorScheme } from "react-native";
+import { PaperProvider } from 'react-native-paper';
 
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 
@@ -24,22 +25,23 @@ export default function RootLayout() {
       <LanguageProvider>
         <IntlProviderWrapper>
           <CustomHookProvider>
-            <AnimatedSplashOverlay />
-
-            <Stack>
-              <Stack.Screen
-                name="index"
-                options={{
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="loginPage"
-                options={{
-                  headerShown: false,
-                }}
-              />
-            </Stack>
+            <PaperProvider>
+              <AnimatedSplashOverlay />
+              <Stack>
+                <Stack.Screen
+                  name="index"
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="loginPage"
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+              </Stack>
+          </PaperProvider>
           </CustomHookProvider>
         </IntlProviderWrapper>
       </LanguageProvider>
