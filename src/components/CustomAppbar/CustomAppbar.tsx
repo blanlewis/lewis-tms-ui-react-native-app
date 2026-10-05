@@ -38,7 +38,8 @@ type IconType =
   | "login";
 
 interface CustomAppbarProps {
-  appBarBackAction: {
+  appBarLeftIconAction: {
+    icon: IconType;
     onPress: () => void;
   };
 
@@ -53,13 +54,18 @@ interface CustomAppbarProps {
 }
 
 const CustomAppbar = ({
-  appBarBackAction,
+  appBarLeftIconAction,
   appBarContent,
   appBarAction,
 }: CustomAppbarProps) => (
   <Appbar.Header>
-    <Appbar.BackAction onPress={appBarBackAction.onPress} />
-    <Appbar.Content title={appBarContent.title} />
+    <Appbar.Action
+      icon={appBarLeftIconAction.icon}
+      onPress={appBarLeftIconAction.onPress}
+    />
+
+    <Appbar.Content style={{ display: "flex", alignItems: "center" }} title={appBarContent.title} />
+
     {appBarAction.map((action, index) => (
       <Appbar.Action
         key={index}
@@ -73,3 +79,4 @@ const CustomAppbar = ({
 export default CustomAppbar;
 
 export type { CustomAppbarProps };
+
