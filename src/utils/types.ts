@@ -133,18 +133,13 @@ const customHookInitialState: CustomHookState = {
     },
 };
 
+console.log(customHookInitialState);
+
 export type {
-    CustomHookState,
-    CustomHookAction,
-    LoginResponse,
-    BookingTypes,
+    BookingTypes, CustomHookAction, CustomHookState, LoginResponse
 };
 
-export {
-    customHookInitialState,
-    CustomHookActionEnum,
-    SnackbarSeverityEnum,
-    PageLayoutEnum,
-    PageLayoutPaneEnum,
-    BookingTabsDataEnum,
-};
+    export {
+        BookingTabsDataEnum, CustomHookActionEnum, customHookInitialState, PageLayoutEnum,
+        PageLayoutPaneEnum, SnackbarSeverityEnum
+    };

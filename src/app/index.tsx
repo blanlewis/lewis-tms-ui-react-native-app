@@ -15,31 +15,36 @@ export default function HomeScreen() {
     getCurrentUser();
   }, []);
 
-  // Still checking session
+  console.log("loginId:", loginId);
+  console.log("isSessionChecked:", isSessionChecked);
+
+  // Still checking whether the user is logged in
   if (!isSessionChecked) {
     return (
       <View
         style={{
           flex: 1,
-          alignItems: "center",
           justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <ActivityIndicator
-          size="large"
-        />
+        <ActivityIndicator size="large" />
       </View>
     );
   }
 
-  // Not logged in
-  console.log("loginId:", loginId);
-  console.log("isSessionChecked:", isSessionChecked);
-  console.log("!loginId:", !loginId);
+  // Session check is complete and user is NOT logged in
   if (!loginId) {
     return <Redirect href="/loginPage" />;
   }
 
-  // Logged in
-  return <View style={{ width: "100%", height: "100%" }} />;
+  // Session check is complete and user IS logged in
+  return (
+    <View
+      style={{
+        flex: 1,
+        width: "100%",
+      }}
+    />
+  );
 }
