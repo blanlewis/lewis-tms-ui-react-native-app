@@ -4,6 +4,8 @@ import { ActivityIndicator, View } from "react-native";
 
 import { useCustomHook } from "../utils/hook";
 
+import HomePageLayout from "../components/HomePageLayout/HomePageLayout";
+
 export default function HomeScreen() {
   const {
     loginId,
@@ -40,11 +42,6 @@ export default function HomeScreen() {
 
   // Session check is complete and user IS logged in
   return (
-    <View
-      style={{
-        flex: 1,
-        width: "100%",
-      }}
-    />
+    <HomePageLayout />
   );
 }
