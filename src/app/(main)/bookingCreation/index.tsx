@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-export default function BookingCreationPage() {
+const BookingCreationPage = () => {
   return (
     <View
       style={{
@@ -12,4 +12,5 @@ export default function BookingCreationPage() {
       <Text>Booking Creation Page</Text>
     </View>
   );
-}
+};
+export default BookingCreationPage;

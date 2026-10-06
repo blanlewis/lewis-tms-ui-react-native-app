@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import reduxHookReducer from "./reduxHookSlice";
+import reduxHookReducer from "./reduxHookPageSlice";
 
 const store = configureStore({
   reducer: {
-    reduxHook: reduxHookReducer,
+    reduxHookPage: reduxHookReducer,
   }
 })
 

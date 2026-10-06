@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-export default function DossierPlanningPage() {
+const DossierPlanningPage = () => {
   return (
     <View
       style={{
@@ -12,4 +12,5 @@ export default function DossierPlanningPage() {
       <Text>Dossier Planning Page</Text>
     </View>
   );
-}
+};
+export default DossierPlanningPage;

@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-export default function DossierPlanningPage() {
+const ResourcePlanningPage = () => {
   return (
     <View
       style={{
@@ -9,7 +9,8 @@ export default function DossierPlanningPage() {
         justifyContent: "center",
       }}
     >
-      <Text>Dossier Planning Page</Text>
+      <Text>Resource Planning Page</Text>
     </View>
   );
-}
+};
+export default ResourcePlanningPage;

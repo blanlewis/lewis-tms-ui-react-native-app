@@ -1,24 +1,49 @@
-import { setReduxHookState } from "@/utils/redux/reduxHookSlice";
-import type { RootState } from "@/utils/redux/store";
+import { useRouter } from "expo-router";
 import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+
 import type { CustomAppbarProps } from "../CustomAppbar";
 import CustomAppbar from "../CustomAppbar";
 import CustomDrawer from "../CustomDrawer";
 
+import {
+  setReduxHookPageState
+} from "@/utils/redux/reduxHookPageSlice";
+
+import type { RootState } from "@/utils/redux/store";
+
+import { ActivePageEnum } from "@/utils/redux/types";
+
 const HomePageLayout = () => {
-  const isMenuDrawerOpen = useSelector(
-    (state: RootState) => state.reduxHook.isMenuDrawerOpen
-  );
+  const router = useRouter();
   const dispatch = useDispatch();
+
+  const {
+    isMenuDrawerOpen,
+    activePage,
+  } = useSelector(
+    (state: RootState) => state.reduxHookPage
+  );
+
+  const handlePageNavigation = (page: ActivePageEnum) => {
+    dispatch(
+      setReduxHookPageState({
+        activePage: page,
+        isMenuDrawerOpen: false,
+      })
+    );
+    router.push(page);
+  };
 
   const appTopBar: CustomAppbarProps = {
     appBarLeftIconAction: {
       icon: "menu",
       onPress: () => {
-        console.log("Menu clicked");
-        dispatch(setReduxHookState({ isMenuDrawerOpen: !isMenuDrawerOpen }));
-        console.log("isMenuDrawerOpen:", !isMenuDrawerOpen);
+        dispatch(
+          setReduxHookPageState({
+            isMenuDrawerOpen: !isMenuDrawerOpen,
+          })
+        );
       },
     },
 
@@ -41,25 +66,92 @@ const HomePageLayout = () => {
   return (
     <View
       style={{
-        flex: 1,
         width: "100%",
       }}
     >
       <CustomAppbar
-        appBarLeftIconAction={appTopBar.appBarLeftIconAction}
+        appBarLeftIconAction={
+          appTopBar.appBarLeftIconAction
+        }
         appBarContent={appTopBar.appBarContent}
         appBarAction={appTopBar.appBarAction}
       />
+
       <CustomDrawer
-        drawerSection={{ title: "TMS Apps", display: isMenuDrawerOpen ? 'flex' : 'none' }} 
+        drawerSection={{
+          title: "TMS Apps",
+          display: isMenuDrawerOpen ? "flex" : "none",
+        }}
         drawerItemList={[
-          { label: "Dossier Planning", active: true, onPress: () => console.log("First Item clicked") },
-          { label: "Reports", active: false, onPress: () => console.log("Second Item clicked") },
-          { label: "Fleet View", active: false, onPress: () => console.log("Third Item clicked") },
-          { label: "Route Estimation", active: false, onPress: () => console.log("Fourth Item clicked") },
-          { label: "Resource Planning", active: false, onPress: () => console.log("Fifth Item clicked") },
-          { label: "Driver app", active: false, onPress: () => console.log("Sixth Item clicked") },
-          { label: "Booking Creation", active: false, onPress: () => console.log("Seventh Item clicked") },
+          {
+            label: "Dossier Planning",
+            active:
+              activePage ===
+              ActivePageEnum.DOSSIER_PLANNING_PAGE,
+            onPress: () => {
+              handlePageNavigation(ActivePageEnum.DOSSIER_PLANNING_PAGE);
+            },
+          },
+
+          {
+            label: "Reports",
+            active:
+              activePage ===
+              ActivePageEnum.REPORTS_PAGE,
+            onPress: () => {
+              handlePageNavigation(ActivePageEnum.REPORTS_PAGE);
+            },
+          },
+
+          {
+            label: "Fleet View",
+            active:
+              activePage ===
+              ActivePageEnum.FLEET_VIEW_PAGE,
+            onPress: () => {
+              handlePageNavigation(ActivePageEnum.FLEET_VIEW_PAGE);
+            },
+          },
+
+          {
+            label: "Route Estimation",
+            active:
+              activePage ===
+              ActivePageEnum.ROUTE_ESTIMATION_PAGE,
+            onPress: () => {
+              handlePageNavigation(ActivePageEnum.ROUTE_ESTIMATION_PAGE);
+            },
+          },
+
+          {
+            label: "Resource Planning",
+            active:
+              activePage ===
+              ActivePageEnum.RESOURCE_PLANNING_PAGE,
+            onPress: () => {
+              handlePageNavigation(ActivePageEnum.RESOURCE_PLANNING_PAGE);
+            },
+          },
+
+          {
+            label: "Driver app",
+            active:
+              activePage ===
+              ActivePageEnum.DRIVER_APP_PAGE,
+            onPress: () => {
+              handlePageNavigation(ActivePageEnum.DRIVER_APP_PAGE);
+            },
+          },
+
+          {
+            label: "Booking Creation",
+            active:
+              activePage ===
+              ActivePageEnum.BOOKING_CREATION_PAGE,
+            onPress: () => {
+              handlePageNavigation(ActivePageEnum.BOOKING_CREATION_PAGE);
+            },
+          },
         ]}
       />
     </View>

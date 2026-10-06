@@ -8,13 +8,10 @@ import {
   Stack,
   ThemeProvider,
 } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
 import { useColorScheme } from "react-native";
 import { PaperProvider } from 'react-native-paper';
 
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
-
-SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
