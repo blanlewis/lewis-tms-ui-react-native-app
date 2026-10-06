@@ -50,7 +50,18 @@ const HomePageLayout = () => {
         appBarContent={appTopBar.appBarContent}
         appBarAction={appTopBar.appBarAction}
       />
-      <CustomDrawer isMenuDrawerOpen={isMenuDrawerOpen} />
+      <CustomDrawer
+        drawerSection={{ title: "TMS Apps", display: isMenuDrawerOpen ? 'flex' : 'none' }} 
+        drawerItemList={[
+          { label: "Dossier Planning", active: true, onPress: () => console.log("First Item clicked") },
+          { label: "Reports", active: false, onPress: () => console.log("Second Item clicked") },
+          { label: "Fleet View", active: false, onPress: () => console.log("Third Item clicked") },
+          { label: "Route Estimation", active: false, onPress: () => console.log("Fourth Item clicked") },
+          { label: "Resource Planning", active: false, onPress: () => console.log("Fifth Item clicked") },
+          { label: "Driver app", active: false, onPress: () => console.log("Sixth Item clicked") },
+          { label: "Booking Creation", active: false, onPress: () => console.log("Seventh Item clicked") },
+        ]}
+      />
     </View>
   );
 };

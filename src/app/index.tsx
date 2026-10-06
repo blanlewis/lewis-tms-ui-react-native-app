@@ -4,7 +4,6 @@ import { ActivityIndicator, View } from "react-native";
 
 import { useCustomHook } from "../utils/hook";
 
-import HomePageLayout from "../components/HomePageLayout/HomePageLayout";
 
 export default function HomeScreen() {
   const {
@@ -40,8 +39,5 @@ export default function HomeScreen() {
     return <Redirect href="/loginPage" />;
   }
 
-  // Session check is complete and user IS logged in
-  return (
-    <HomePageLayout />
-  );
+  return <Redirect href="/(main)/dossierPlanning" />;
 }

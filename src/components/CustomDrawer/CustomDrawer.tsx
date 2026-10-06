@@ -1,21 +1,27 @@
 import { Drawer } from 'react-native-paper';
 
 interface CustomDrawerProps {
-  isMenuDrawerOpen: boolean;
+  drawerSection:{
+    title: string;
+    display: 'flex' | 'none';
+  }
+  drawerItemList: {
+    label: string;
+    active: boolean;
+    onPress: () => void;
+  }[]
 }
-const CustomDrawer = ({ isMenuDrawerOpen }: CustomDrawerProps) => {
+const CustomDrawer = ({ drawerSection, drawerItemList }: CustomDrawerProps) => {
   return (
-    <Drawer.Section title="Some title" style={{ display: isMenuDrawerOpen ? 'flex' : 'none' }}>
-      <Drawer.Item
-        label="First Item"
-        active={true}
-        onPress={() => {}}
-      />
-      <Drawer.Item
-        label="Second Item"
-        active={false}
-        onPress={() => {}}
-      />
+    <Drawer.Section title={drawerSection.title} style={{ display: drawerSection.display }}>
+      {drawerItemList.map((item, index) => (
+        <Drawer.Item
+          key={index}
+          label={item.label}
+          active={item.active}
+          onPress={item.onPress}
+        />
+      ))}
     </Drawer.Section>
   );
 };
