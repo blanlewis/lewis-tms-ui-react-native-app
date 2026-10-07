@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { ReduxHookPageState } from './types';
-import { ActivePageEnum } from './types';
 
 const reduxHookPageInitialState: ReduxHookPageState  = {
   isMenuDrawerOpen: false,
-  activePage:ActivePageEnum.DOSSIER_PLANNING_PAGE,
 };
 
 const reduxHookPageSlice = createSlice({

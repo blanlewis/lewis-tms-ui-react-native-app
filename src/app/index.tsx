@@ -2,17 +2,11 @@ import { Redirect } from "expo-router";
 import { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 
-import { RootState } from "@/utils/redux/store";
-import { useSelector } from "react-redux";
+import HomePageLayout from "@/components/HomePageLayout";
 import { useCustomHook } from "../utils/hook";
 
 
 export default function HomeScreen() {
-  const {
-    activePage,
-  } = useSelector(
-    (state: RootState) => state.reduxHookPage
-  );
 
   const {
     loginId,
@@ -47,5 +41,5 @@ export default function HomeScreen() {
     return <Redirect href="/loginPage" />;
   }
 
-  return <Redirect href={activePage} />;
+  return <HomePageLayout />;
 }

@@ -2,30 +2,47 @@ import { CustomHookProvider } from "@/utils/context";
 import IntlProviderWrapper from "@/utils/languageTranslation/IntlProvider";
 import { LanguageProvider } from "@/utils/languageTranslation/LanguageContext";
 import ReduxProvider from "@/utils/redux/ReduxHookProvider";
+
 import {
-  DarkTheme,
   DefaultTheme,
   Stack,
   ThemeProvider,
 } from "expo-router";
-import { useColorScheme } from "react-native";
-import { PaperProvider } from 'react-native-paper';
+
+import {
+  MD3LightTheme,
+  PaperProvider,
+} from "react-native-paper";
 
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+const lightTheme = {
+  ...MD3LightTheme,
+  colors: {
+    ...MD3LightTheme.colors,
+    primary: "#1268E8",
+    onPrimary: "#FFFFFF",
+    background: "#F8FBFF",
+    surface: "#FFFFFF",
+    surfaceVariant: "#F5F8FC",
+    onBackground: "#172B4D",
+    onSurface: "#172B4D",
+    outline: "#D9E3F0",
+    outlineVariant: "#E5ECF5",
+    error: "#D32F2F",
+  },
+};
 
+export default function RootLayout() {
   return (
-    <ThemeProvider
-      value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-    >
+    <ThemeProvider value={DefaultTheme}>
       <LanguageProvider>
         <IntlProviderWrapper>
           <CustomHookProvider>
             <ReduxProvider>
-              <PaperProvider>
+              <PaperProvider theme={lightTheme}>
                 <AnimatedSplashOverlay />
+
                 <Stack>
                   <Stack.Screen
                     name="index"
@@ -33,12 +50,14 @@ export default function RootLayout() {
                       headerShown: false,
                     }}
                   />
+
                   <Stack.Screen
                     name="loginPage"
                     options={{
                       headerShown: false,
                     }}
                   />
+
                   <Stack.Screen
                     name="(main)"
                     options={{
@@ -46,8 +65,8 @@ export default function RootLayout() {
                     }}
                   />
                 </Stack>
-            </PaperProvider>
-          </ReduxProvider>
+              </PaperProvider>
+            </ReduxProvider>
           </CustomHookProvider>
         </IntlProviderWrapper>
       </LanguageProvider>
