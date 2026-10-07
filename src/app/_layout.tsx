@@ -16,23 +16,6 @@ import {
 
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 
-const lightTheme = {
-  ...MD3LightTheme,
-  colors: {
-    ...MD3LightTheme.colors,
-    primary: "#1268E8",
-    onPrimary: "#FFFFFF",
-    background: "#F8FBFF",
-    surface: "#FFFFFF",
-    surfaceVariant: "#F5F8FC",
-    onBackground: "#172B4D",
-    onSurface: "#172B4D",
-    outline: "#D9E3F0",
-    outlineVariant: "#E5ECF5",
-    error: "#D32F2F",
-  },
-};
-
 export default function RootLayout() {
   return (
     <ThemeProvider value={DefaultTheme}>
@@ -40,7 +23,7 @@ export default function RootLayout() {
         <IntlProviderWrapper>
           <CustomHookProvider>
             <ReduxProvider>
-              <PaperProvider theme={lightTheme}>
+              <PaperProvider theme={MD3LightTheme}>
                 <AnimatedSplashOverlay />
 
                 <Stack>
@@ -53,13 +36,6 @@ export default function RootLayout() {
 
                   <Stack.Screen
                     name="loginPage"
-                    options={{
-                      headerShown: false,
-                    }}
-                  />
-
-                  <Stack.Screen
-                    name="(main)"
                     options={{
                       headerShown: false,
                     }}
