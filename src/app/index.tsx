@@ -47,5 +47,5 @@ export default function HomeScreen() {
     return <Redirect href="/loginPage" />;
   }
 
-  return <Redirect href={`/${activePage}`} />;
+  return <Redirect href={activePage} />;
 }

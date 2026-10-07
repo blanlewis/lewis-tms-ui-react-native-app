@@ -4,7 +4,7 @@ import { ActivePageEnum } from './types';
 
 const reduxHookPageInitialState: ReduxHookPageState  = {
   isMenuDrawerOpen: false,
-  activePage: ActivePageEnum.DOSSIER_PLANNING_PAGE,
+  activePage:ActivePageEnum.DOSSIER_PLANNING_PAGE,
 };
 
 const reduxHookPageSlice = createSlice({

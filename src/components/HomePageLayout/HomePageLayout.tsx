@@ -32,6 +32,7 @@ const HomePageLayout = () => {
         isMenuDrawerOpen: false,
       })
     );
+    // localStorage.setItem("activePage", page);
     router.push(page);
   };
 
