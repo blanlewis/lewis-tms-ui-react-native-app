@@ -1,24 +1,21 @@
-import { View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-
-import type { CustomAppbarProps } from "../CustomAppbar";
-import CustomAppbar from "../CustomAppbar";
-import CustomDrawer from "../CustomDrawer";
-
+import { useCustomHook } from "@/utils/hook";
 import {
   setReduxHookPageState
 } from "@/utils/redux/reduxHookPageSlice";
-
 import type { RootState } from "@/utils/redux/store";
+import { View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import type { CustomAppbarProps } from "../CustomAppbar";
+import CustomAppbar from "../CustomAppbar";
+import CustomBottomNavigation from "../CustomBottomNavigation";
+import CustomDrawer from "../CustomDrawer";
 
 const HomePageLayout = () => {
   const dispatch = useDispatch();
-
-  const {
-    isMenuDrawerOpen,
-  } = useSelector(
+  const { isMenuDrawerOpen } = useSelector(
     (state: RootState) => state.reduxHookPage
   );
+  const { logoutState } = useCustomHook();
 
   const appTopBar: CustomAppbarProps = {
     appBarLeftIconAction: {
@@ -52,24 +49,76 @@ const HomePageLayout = () => {
     <View
       style={{
         width: "100%",
+        flex: 1,
       }}
     >
+    {/* Drawer */}
+      {isMenuDrawerOpen && (
+        <View
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            zIndex: 1000,
+            elevation: 10,
+          }}
+        >
+          <CustomDrawer
+            drawerHeaderSection={{
+              title: "Exit",
+              icon: "arrow-left",
+              onPress: () => {
+                dispatch(
+                  setReduxHookPageState({
+                    isMenuDrawerOpen: false,
+                  })
+                );
+              },
+            }}
+            drawerItemList={[
+              {
+                label: "Profile",
+                icon: "account",
+                active: false,
+                onPress: () => {
+                  console.log("Profile clicked");
+                },
+              },
+              {
+                label: "Company",
+                icon: "office-building",
+                active: false,
+                onPress: () => {
+                  console.log("Company clicked");
+                },
+              },
+              {
+                label: "Department",
+                icon: "domain",
+                active: false,
+                onPress: () => {
+                  console.log("Department clicked");
+                },
+              },
+            ]}
+            drawerFooterSection={{
+              title: "Logout",
+              icon: "logout",
+              onPress: () => {
+                logoutState();
+              },
+            }}
+          />
+        </View>
+      )}
+      {/* App Bar */}
       <CustomAppbar
-        appBarLeftIconAction={
-          appTopBar.appBarLeftIconAction
-        }
+        appBarLeftIconAction={appTopBar.appBarLeftIconAction}
         appBarContent={appTopBar.appBarContent}
         appBarAction={appTopBar.appBarAction}
       />
-
-      <CustomDrawer
-        drawerSection={{
-          title: "TMS Apps",
-          display: isMenuDrawerOpen ? "flex" : "none",
-        }}
-        drawerItemList={[
-        ]}
-      />
+      {/* Bottom Navigation */}
+      <CustomBottomNavigation />
     </View>
   );
 };
