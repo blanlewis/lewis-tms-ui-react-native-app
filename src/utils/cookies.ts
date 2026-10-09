@@ -2,7 +2,6 @@
 import { Platform } from "react-native";
 
 const getCookies = async () => {
-  // The browser manages cookies on web.
   if (Platform.OS === "web") {
     console.log("Web: browser manages cookies.");
     return null;
@@ -13,21 +12,20 @@ const getCookies = async () => {
       "@preeternal/react-native-cookie-manager"
     );
 
-    const GRAPHQL_URL =
+    const graphqlUrl =
       process.env.EXPO_PUBLIC_GRAPHQL_URL_FOR_NATIVE;
 
-    if (!GRAPHQL_URL) {
+    if (!graphqlUrl) {
       throw new Error(
         "EXPO_PUBLIC_GRAPHQL_URL_FOR_NATIVE is not defined"
       );
     }
 
-    const cookies = await CookieManager.get(GRAPHQL_URL);
+    if (!CookieManager || typeof CookieManager.get !== "function") {
+      throw new Error("CookieManager.get is unavailable.");
+    }
 
-    // Don't log cookie contents; they may contain session credentials.
-    console.log("Native cookie lookup completed.");
-
-    return cookies;
+    return await CookieManager.get(graphqlUrl);
   } catch (error) {
     console.error("Failed to get native cookies:", error);
     return null;

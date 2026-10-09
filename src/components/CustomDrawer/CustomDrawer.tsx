@@ -33,6 +33,7 @@ const CustomDrawer = ({
         width: "100%",
         height: "100%",
         backgroundColor: "white",
+        paddingTop: 45,
       }}
     >
       {/* Header */}
