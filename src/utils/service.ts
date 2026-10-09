@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import { getCookies } from "./cookies";
 
 import {
@@ -13,13 +14,15 @@ import {
 } from "./types";
 
 const GRAPHQL_URL =
-  process.env.EXPO_PUBLIC_GRAPHQL_URL_FOR_WEB;
+Platform.OS === "web"
+? process.env.EXPO_PUBLIC_GRAPHQL_URL_FOR_WEB
+: process.env.EXPO_PUBLIC_GRAPHQL_URL_FOR_NATIVE;
 
 if (!GRAPHQL_URL) {
   throw new Error(
-    "EXPO_PUBLIC_GRAPHQL_URL is not defined"
+  `GraphQL URL is not defined for platform: ${Platform.OS}`
   );
-};
+}
 
 /**
  * Common GraphQL request function

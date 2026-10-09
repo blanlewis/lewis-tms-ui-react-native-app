@@ -1,62 +1,37 @@
+
 import { Platform } from "react-native";
 
 const getCookies = async () => {
-  /**
-   * Web
-   *
-   * Cookies are managed by the browser.
-   */
+  // The browser manages cookies on web.
   if (Platform.OS === "web") {
-    console.log(
-      "Running on Web - browser manages cookies."
-    );
-
+    console.log("Web: browser manages cookies.");
     return null;
   }
 
-  /**
-   * Android / iOS
-   *
-   * Dynamically import the native cookie
-   * package so Expo Web doesn't try to load it.
-   */
   try {
-    const {
-      default: CookieManager,
-    } = await import(
-      "@react-native-community/cookies"
+    const { default: CookieManager } = await import(
+      "@preeternal/react-native-cookie-manager"
     );
 
     const GRAPHQL_URL =
-      process.env.EXPO_PUBLIC_GRAPHQL_URL;
+      process.env.EXPO_PUBLIC_GRAPHQL_URL_FOR_NATIVE;
 
     if (!GRAPHQL_URL) {
       throw new Error(
-        "EXPO_PUBLIC_GRAPHQL_URL is not defined"
+        "EXPO_PUBLIC_GRAPHQL_URL_FOR_NATIVE is not defined"
       );
     }
 
-    const cookies =
-      await CookieManager.get(
-        GRAPHQL_URL
-      );
+    const cookies = await CookieManager.get(GRAPHQL_URL);
 
-    console.log(
-      "Native cookies:",
-      cookies
-    );
+    // Don't log cookie contents; they may contain session credentials.
+    console.log("Native cookie lookup completed.");
 
     return cookies;
   } catch (error) {
-    console.error(
-      "Failed to get native cookies:",
-      error
-    );
-
+    console.error("Failed to get native cookies:", error);
     return null;
   }
 };
 
-export {
-    getCookies
-};
+export { getCookies };
