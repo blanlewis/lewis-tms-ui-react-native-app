@@ -1,27 +1,45 @@
 import * as React from 'react';
-import { BottomNavigation, Text } from 'react-native-paper';
+import { BottomNavigation } from 'react-native-paper';
+import BookingRoute from '../BookingRoute';
+import DossierRoute from '../DossierRoute';
+import MapRoute from '../MapRoute';
+import NotificationsRoute from '../NotificationsRoute';
 
-const MusicRoute = () => <Text>Music</Text>;
-
-const AlbumsRoute = () => <Text>Albums</Text>;
-
-const RecentsRoute = () => <Text>Recents</Text>;
-
-const NotificationsRoute = () => <Text>Notifications</Text>;
 
 const CustomBottomNavigation = () => {
   const [index, setIndex] = React.useState(0);
+
   const [routes] = React.useState([
-    { key: 'music', title: 'Favorites', focusedIcon: 'heart', unfocusedIcon: 'heart-outline'},
-    { key: 'albums', title: 'Albums', focusedIcon: 'album' },
-    { key: 'recents', title: 'Recents', focusedIcon: 'history' },
-    { key: 'notifications', title: 'Notifications', focusedIcon: 'bell', unfocusedIcon: 'bell-outline' },
+    {
+      key: 'dossier',
+      title: 'Dossier',
+      focusedIcon: 'folder',
+      unfocusedIcon: 'folder-outline',
+    },
+    {
+      key: 'booking',
+      title: 'Booking',
+      focusedIcon: 'calendar',
+      unfocusedIcon: 'calendar-outline',
+    },
+    {
+      key: 'map',
+      title: 'Map',
+      focusedIcon: 'map',
+      unfocusedIcon: 'map-outline',
+    },
+    {
+      key: 'notifications',
+      title: 'Notifications',
+      focusedIcon: 'bell',
+      unfocusedIcon: 'bell-outline',
+    },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
-    music: MusicRoute,
-    albums: AlbumsRoute,
-    recents: RecentsRoute,
+    dossier: DossierRoute,
+    booking: BookingRoute,
+    map: MapRoute,
     notifications: NotificationsRoute,
   });
 
@@ -34,4 +52,4 @@ const CustomBottomNavigation = () => {
   );
 };
 
-export default CustomBottomNavigation
+export default CustomBottomNavigation;
