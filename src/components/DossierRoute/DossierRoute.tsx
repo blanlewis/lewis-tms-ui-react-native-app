@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { Badge, List, Text } from 'react-native-paper';
 import CustomAccordion from '../CustomAccordion';
+import CustomSegmentButtons from '../CustomSegmentButtons';
 
 type DossierStatus =
   | 'Draft'
@@ -63,107 +64,151 @@ const statusColors: Record<DossierStatus, string> = {
   Done: '#2E7D32',
 };
 
+
 const DossierRoute = () => {
   const [expandedId, setExpandedId] = React.useState<number | null>(null);
+  const [selectedStatus, setSelectedStatus] = React.useState('');
+
+  const statusButtons = [
+    { value: 'Draft', label: 'Draft' },
+    { value: 'In Transit', label: 'In Transit' },
+    { value: 'Planned', label: 'Planned' },
+    { value: 'Delayed', label: 'Delayed' },
+    { value: 'Done', label: 'Done' },
+  ];
+
+  const filteredDossiers = dossiers.filter(
+    (dossier) =>
+      selectedStatus === '' || dossier.status === selectedStatus,
+  );
 
   return (
-    <ScrollView
-      style={{ flex: 1, width: '100%' }}
-      contentContainerStyle={{
-        padding: 12,
-        paddingBottom: 24,
-      }}
-    >
-      {dossiers.map((dossier) => (
-        <CustomAccordion
-          key={dossier.id}
-          expanded={expandedId === dossier.id}
-          onPress={() =>
-            setExpandedId(
-              expandedId === dossier.id ? null : dossier.id,
-            )
-          }
-          style={{
-            width: '100%',
-            marginBottom: 8,
-            borderRadius: 8,
+    <View style={{ flex: 1, width: '100%' }}>
+      <View
+        style={{
+          padding: 12,
+        }}
+      >
+        <CustomSegmentButtons
+          value={selectedStatus}
+          onValueChange={(value) => {
+            setSelectedStatus(value);
+            setExpandedId(null);
           }}
-            left={(props: { color: string; style?: object }) => (
-            <List.Icon {...props} icon="truck-delivery-outline" />
-            )}
-          title={
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flex: 1,
-                paddingRight: 8,
-              }}
-            >
-              <Text
-                variant="titleSmall"
-                style={{ flex: 1 }}
-              >
-                {dossier.origin} → {dossier.destination}
-              </Text>
+          buttons={statusButtons}
+        />
 
-              <Badge
+        <Text
+          variant="bodySmall"
+          style={{ marginTop: 12 }}
+        >
+          {filteredDossiers.length} dossiers
+        </Text>
+      </View>
+
+      <ScrollView
+        style={{ flex: 1, width: '100%' }}
+        contentContainerStyle={{
+          paddingHorizontal: 12,
+          paddingBottom: 24,
+        }}
+      >
+        {filteredDossiers.map((dossier) => (
+          <CustomAccordion
+            key={dossier.id}
+            expanded={expandedId === dossier.id}
+            onPress={() =>
+              setExpandedId(
+                expandedId === dossier.id ? null : dossier.id,
+              )
+            }
+            style={{
+              width: '100%',
+              marginBottom: 8,
+              borderRadius: 8,
+            }}
+            left={(props: { color: string; style?: object }) => (
+              <List.Icon
+                {...props}
+                icon="truck-delivery-outline"
+              />
+            )}
+            title={
+              <View
                 style={{
-                  backgroundColor: statusColors[dossier.status],
-                  color: '#FFFFFF',
-                  marginLeft: 8,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flex: 1,
+                  paddingRight: 8,
                 }}
               >
-                {dossier.status}
-              </Badge>
-            </View>
-          }
-        >
-          <View
-            style={{
-              paddingHorizontal: 16,
-              paddingVertical: 12,
-              gap: 10,
-            }}
+                <Text
+                  variant="titleSmall"
+                  style={{ flex: 1 }}
+                >
+                  {dossier.origin} → {dossier.destination}
+                </Text>
+
+                <Badge
+                  style={{
+                    backgroundColor: statusColors[dossier.status],
+                    color: '#FFFFFF',
+                    marginLeft: 8,
+                  }}
+                >
+                  {dossier.status}
+                </Badge>
+              </View>
+            }
           >
-            <Text variant="titleSmall">Dossier #{dossier.id}</Text>
-
-            <Text variant="bodyMedium">
-              Origin: {dossier.origin}
-            </Text>
-
-            <Text variant="bodyMedium">
-              Latitude: {dossier.originLatitude}
-            </Text>
-
-            <Text variant="bodyMedium">
-              Longitude: {dossier.originLongitude}
-            </Text>
-
             <View
               style={{
-                height: 1,
-                backgroundColor: '#DDDDDD',
-                marginVertical: 4,
+                paddingHorizontal: 16,
+                paddingVertical: 12,
+                gap: 10,
               }}
-            />
+            >
+              <Text variant="titleSmall">
+                Dossier #{dossier.id}
+              </Text>
 
-            <Text variant="bodyMedium">
-              Destination: {dossier.destination}
-            </Text>
+              <Text variant="bodyMedium">
+                Origin: {dossier.origin}
+              </Text>
 
-            <Text variant="bodyMedium">
-              Latitude: {dossier.destinationLatitude}
-            </Text>
+              <Text variant="bodyMedium">
+                Latitude: {dossier.originLatitude}
+              </Text>
 
-            <Text variant="bodyMedium">
-              Longitude: {dossier.destinationLongitude}
-            </Text>
-          </View>
-        </CustomAccordion>
-      ))}
-    </ScrollView>
+              <Text variant="bodyMedium">
+                Longitude: {dossier.originLongitude}
+              </Text>
+
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: '#DDDDDD',
+                  marginVertical: 4,
+                }}
+              />
+
+              <Text variant="bodyMedium">
+                Destination: {dossier.destination}
+              </Text>
+
+              <Text variant="bodyMedium">
+                Latitude: {dossier.destinationLatitude}
+              </Text>
+
+              <Text variant="bodyMedium">
+                Longitude: {dossier.destinationLongitude}
+              </Text>
+            </View>
+          </CustomAccordion>
+        ))}
+      </ScrollView>
+    </View>
   );
 };
 
